@@ -15,11 +15,19 @@ class PassportAuthController extends Controller
     // register
     public function register(Request $request)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
         ]);
+
+        if($validator->fails()){
+            return response()->json([
+                "success" => false,
+                "message" => "The given data was invalid",
+                "data" => $validator->messages(),
+            ], 422);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -30,7 +38,9 @@ class PassportAuthController extends Controller
         $token = $user->createToken('Laravel8PassportAuth')->accessToken;
 
         return response()->json([
-            'token' => $token
+            'success' => true,
+            'message' => "Register successfully",
+            'data' => $user
         ], 200);
     }
 
@@ -64,7 +74,7 @@ class PassportAuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => "Logout successfully"
-        ]);
+        ], 200);
     }
     
 
@@ -79,7 +89,7 @@ class PassportAuthController extends Controller
             "success" => true,
             "message" => "User List",
             "data" => $users
-        ]);
+        ], 200);
     }
 
     public function store(Request $request, User $user)
@@ -96,7 +106,7 @@ class PassportAuthController extends Controller
                 "success" => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);
+            ], 422);
         }
 
         $user->name = $request->name;
@@ -109,7 +119,7 @@ class PassportAuthController extends Controller
             "success" => true,
             "message" => "User created successfully",
             "data" => $user
-        ]);
+        ], 201);
 
     }
 
@@ -121,14 +131,14 @@ class PassportAuthController extends Controller
             return response()->json([
                 "success" => false,
                 "message" => "User not found"
-            ]);
+            ],404);
         }
 
         return response()->json([
             "success" => true,
             "message" => "User retrieved successfully",
             "data" => $user,
-        ]);
+        ], 200);
     }
 
     public function update(Request $request, User $user)
@@ -148,7 +158,7 @@ class PassportAuthController extends Controller
                 "success" => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);
+            ], 422);
         }
 
         if($request->password != null){
@@ -164,7 +174,7 @@ class PassportAuthController extends Controller
             "success" => true,
             "message" => "User updated successfully",
             "data" => $user
-        ]);
+        ], 201);
     }
 
     public function destroy(User $user)
@@ -174,7 +184,7 @@ class PassportAuthController extends Controller
         return response()->json([
             "success" => true,
             "message" => "User deleted succesfully"
-        ]);
+        ], 200);
     }
 
 }

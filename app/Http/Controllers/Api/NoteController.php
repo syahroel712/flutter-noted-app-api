@@ -21,7 +21,7 @@ class NoteController extends Controller
             "success" => true,
             "message" => "Note List",
             "data" => $notes,
-        ]);
+        ], 200);
     }
 
     public function store(Request $request, NoteModel $note)
@@ -39,7 +39,7 @@ class NoteController extends Controller
                 "success" => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);
+            ], 422);
         }
 
         $note->user_id = $request->user_id;
@@ -53,7 +53,7 @@ class NoteController extends Controller
             "success" => true,
             "message" => "Note created successfully",
             "data" => $note
-        ]);
+        ], 201);
     }
 
     public function show($id)
@@ -64,14 +64,14 @@ class NoteController extends Controller
             return response()->json([
                 "success" => false,
                 "message" => "Note not found"
-            ]);
+            ], 404);
         }
 
         return response()->json([
             "success" => true,
             "message" => "Note retrieved successfully",
             "data" => $note,
-        ]);
+        ], 200);
     }
 
 
@@ -90,7 +90,7 @@ class NoteController extends Controller
                 "success" => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);
+            ], 422);
         }
 
         $note->user_id = $request->user_id;
@@ -104,7 +104,7 @@ class NoteController extends Controller
             "success" => true,
             "message" => "Note updated successfully",
             "data" => $note
-        ]);
+        ], 201);
     }
 
     public function destroy(NoteModel $note)
@@ -114,7 +114,7 @@ class NoteController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Note deleted succesfully"
-        ]);
+        ], 200);
     }
 
 }

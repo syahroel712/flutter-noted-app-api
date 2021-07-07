@@ -18,7 +18,7 @@ class FolderController extends Controller
             "success" => true,
             "message" => "Folder List",
             "data" => $folders
-        ]);
+        ], 200);
     }
 
     public function store(Request $request, FolderModel $folder)
@@ -34,7 +34,7 @@ class FolderController extends Controller
                 "success" => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);      
+            ], 422);      
         }
 
         $folder->user_id = $request->user_id;
@@ -46,7 +46,7 @@ class FolderController extends Controller
             "success" => true,
             "message" => "Folder created successfully",
             "data" => $folder
-        ]);
+        ], 201);
     }
 
     public function show($id)
@@ -57,14 +57,14 @@ class FolderController extends Controller
             return response()->json([
                 "success" => false,
                 "message" => "Folder not found",
-            ]);
+            ], 404);
         }
 
         return response()->json([
             "success" => true,
             "message" => "Folder retrieved succesfully",
             "data" => $folder,
-        ]);
+        ], 200);
     }
 
     public function update(Request $request, FolderModel $folder)   
@@ -80,7 +80,7 @@ class FolderController extends Controller
                 'success' => false,
                 "message" => "The given data was invalid",
                 "data" => $validator->messages(),
-            ]);
+            ], 422);
         }
 
         $folder->user_id = $request->user_id;
@@ -92,7 +92,7 @@ class FolderController extends Controller
             "success" => true,
             "message" => "Folder updated successfully",
             "data" => $folder
-        ]);
+        ], 201);
     }
 
     public function destroy(FolderModel $folder)
@@ -102,7 +102,7 @@ class FolderController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Folder deleted successfully"
-        ]);
+        ], 200);
     }
 
 }
