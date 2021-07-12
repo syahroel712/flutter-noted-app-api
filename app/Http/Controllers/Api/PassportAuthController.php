@@ -41,7 +41,7 @@ class PassportAuthController extends Controller
             'success' => true,
             'message' => "Register successfully",
             'data' => $user
-        ], 200);
+        ], 201);
     }
 
     // login
